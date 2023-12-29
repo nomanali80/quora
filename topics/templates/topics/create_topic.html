@@ -1,0 +1,23 @@
+<!-- topics/templates/topics/create_topic.html -->
+
+<h2>Create a New Topic</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <label for="{{ form.title.id_for_label }}">Title:</label>
+    <input type="text" name="{{ form.title.name }}" id="{{ form.title.id_for_label }}" value="{{ form.title.value }}">
+
+    <br>
+
+    <label for="{{ form.description.id_for_label }}">Description:</label>
+    <textarea name="{{ form.description.name }}" id="{{ form.description.id_for_label }}">{{ form.description.value }}</textarea>
+
+    <br>
+
+    <label for="{{ form.topic_picture.id_for_label }}">Topic Picture:</label>
+    <input type="file" name="{{ form.topic_picture.name }}" id="{{ form.topic_picture.id_for_label }}">
+
+    <br>
+
+    <button type="submit" class="btn btn-primary">Create Topic</button>
+</form>

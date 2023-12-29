@@ -21,4 +21,5 @@ from users.views import register
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('quora/', include('users.urls')),
+    path('quora/topics/', include('topics.urls')),
 ]
