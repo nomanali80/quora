@@ -1,0 +1,7 @@
+<!-- questions/templates/questions/answers_partial.html -->
+{% for answer in answers %}
+  <div class="list-group-item">
+    <span class="text-muted">answered by {{ answer.user.username }}</span><br>
+    {{ answer.content }}
+  </div>
+{% endfor %}

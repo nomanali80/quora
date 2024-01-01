@@ -22,4 +22,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('quora/', include('users.urls')),
     path('quora/topics/', include('topics.urls')),
+    path('quora/questions/', include('questions.urls')),
+    path('quora/answers/', include('answers.urls')),
 ]

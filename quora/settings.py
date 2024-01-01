@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "users",
     "topics",
+    "questions",
+    "answers",
     "cloudinary",
     'bootstrap5',
 ]
