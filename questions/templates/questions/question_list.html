@@ -1,4 +1,32 @@
 <!-- questions/templates/questions/question_list.html -->
+<header class="p-3 mb-3 border-bottom">
+  <div class="container">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+      <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
+        <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+      </a>
+
+      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li>
+        <li><a href="#" class="nav-link px-2 link-dark">Ask Question</a></li>
+        <li><a href="#" class="nav-link px-2 link-dark">Add Topics</a></li>
+        <li><a href="#" class="nav-link px-2 link-dark">Topic page</a></li>
+      </ul>
+      <div class="dropdown text-end">
+        <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+          <img src="{{ user.profile_picture }}" alt="mdo" width="32" height="32" class="rounded-circle">
+        </a>
+        <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+          <li><a class="dropdown-item" href="{% url 'edit_profile' %}">View Profile</a></li>
+          <li><a class="dropdown-item" href="{% url 'edit_profile' %}">Edit Profile</a></li>
+          <li><a class="dropdown-item" href="{% url 'edit_profile' %}">Settings</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="{% url 'logout' %}">Sign out</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>
 <head>
   <title>Index Page</title>
   <!-- Add these links to your <head> section -->
@@ -16,14 +44,20 @@
         <li class="list-group-item">
           <div class="mb-2">
             <h3>{{ question.content }}</h3>
-            <span class="text-muted">asked by {{ question.user.name }}</span><br>
+            {% with like_count=question.liked_by.count %}
+              <button type="button" class="btn btn-sm {% if request.user in question.liked_by.all %}btn-success{% endif %}" onclick="likeDislikeQuestion({{ question.id }}, 'like')">Like (<span id="likeCount_{{ question.id }}">{{ like_count }}</span>)</button>
+            {% endwith %}
+
+            {% with dislike_count=question.disliked_by.count %}
+              <button type="button" class="btn btn-sm {% if request.user in question.disliked_by.all %}btn-danger{% endif %}" onclick="likeDislikeQuestion({{ question.id }}, 'dislike')">Dislike (<span id="dislikeCount_{{ question.id }}">{{ dislike_count }}</span>)</button>
+            {% endwith %}
+          </br>
+          <span class="text-muted">asked by <a href="{% url 'show_profile' user_id=question.user.id %}">{{ question.user.name }}</a></span><br>
             Topics: 
             {% for topic in question.topics.all %}
               <span class="badge bg-info">{{ topic.title }}</span>
             {% endfor %}
           </div>
-
-          <!-- Form for submitting new answers -->
           <form class="mb-3 ajax-form" method="post" action="{% url 'create_answer' question.id %}">
             {% csrf_token %}
             <div class="input-group">
@@ -31,15 +65,20 @@
               <button type="submit" class="btn btn-primary">Submit Answer</button>
             </div>
           </form>
-
-          <!-- Display existing answers -->
           {% if question.answers.all %}
           <h5 class="mb-3">Existing Answers:</h5>
           <ul class="list-group existing-answers">
             {% for answer in question.answers.all %}
               <li class="list-group-item">
-                <span class="text-muted">answered by {{ answer.user.username }}</span><br>
+                <span class="text-muted">answered by <a href="{% url 'show_profile' user_id=answer.user.id %}">{{ answer.user.username }}</a></span><br>
                 {{ answer.content }}
+                {% with like_count=answer.liked_by.count %}
+                  <button type="button" class="btn btn-sm {% if request.user in answer.liked_by.all %}btn-success{% endif %}" onclick="likeDislikeAnswer({{ answer.id }}, 'like')">Like (<span id="likeCountAns_{{ answer.id }}">{{ like_count }}</span>)</button>
+                {% endwith %}
+
+                {% with dislike_count=answer.disliked_by.count %}
+                  <button type="button" class="btn btn-sm {% if request.user in answer.disliked_by.all %}btn-danger{% endif %}" onclick="likeDislikeAnswer({{ answer.id }}, 'dislike')">Dislike (<span id="dislikeCountAns_{{ answer.id }}">{{ dislike_count }}</span>)</button>
+                {% endwith %}
               </li>
             {% endfor %}
           </ul>
@@ -73,8 +112,108 @@
         });
       });
     });
+
+    function likeDislikeQuestion(questionId, like_dislike, action) {
+    // Get the CSRF token from the page
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    $.ajax({
+        type: 'POST',
+        url: '/quora/questions/like_dislike_question/' + questionId + '/',
+        data: {
+            'action': action,
+            'like_dislike': like_dislike,
+            csrfmiddlewaretoken: csrftoken,  // Include the CSRF token
+        },
+        dataType: 'json',
+        success: function(data) {
+            if (data.status === 'success') {
+                // Update the like and dislike counts on the UI
+                $('#likeCount_' + questionId).text(data.like_count);
+                $('#dislikeCount_' + questionId).text(data.dislike_count);
+                if (like_dislike == "like") {
+                  var likeButton = $('#likeCount_' + questionId).parent(); // parent of the span is the button
+                  var dislikeButton = $('#dislikeCount_' + questionId).parent(); // parent of the span is the button
+                  
+                  if (data.liked) {
+                    likeButton.addClass('btn-success');
+                    dislikeButton.removeClass('btn-danger');
+                  } else {
+                    likeButton.removeClass('btn-success');
+                  }
+                } else {
+                  var dislikeButton = $('#dislikeCount_' + questionId).parent(); // parent of the span is the button
+                  var likeButton = $('#likeCount_' + questionId).parent();
+
+                  if (data.disliked) {
+                    dislikeButton.addClass('btn-danger');
+                    likeButton.removeClass('btn-success');
+                  } else {
+                    dislikeButton.removeClass('btn-danger');
+                  }
+                }
+            } else {
+                // Display an error message if the server response indicates failure
+                alert('Error1: ' + data.message);
+            }
+        },
+        error: function(xhr, textStatus, errorThrown) {
+            alert('AJAX Error: ' + errorThrown);
+        }
+    });
+}
+
+    function likeDislikeAnswer(answerId, like_dislike, action) {
+        // Get the CSRF token from the page
+        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+
+        // Make the POST request with CSRF token
+        $.ajax({
+            type: 'POST',
+            url: '/quora/answers/like_dislike_answer/' + answerId + '/',
+            data: {
+                'action': action,
+                'like_dislike': like_dislike,
+                csrfmiddlewaretoken: csrftoken,  // Include the CSRF token
+            },
+            dataType: 'json',
+            success: function(data) {
+                if (data.status === 'success') {
+                  debugger;
+                    // Update the like and dislike counts on the UI
+                    $('#likeCountAns_' + answerId).text(data.like_count);
+                    $('#dislikeCountAns_' + answerId).text(data.dislike_count);
+
+                    if (like_dislike == "like") {
+                  var likeButton = $('#likeCountAns_' + answerId).parent(); // parent of the span is the button
+                  var dislikeButton = $('#dislikeCountAns_' + answerId).parent(); // parent of the span is the button
+                  if (data.liked) {
+                    likeButton.addClass('btn-success');
+                    dislikeButton.removeClass('btn-danger');
+                  } else {
+                    likeButton.removeClass('btn-success');
+                  }
+                } else {
+                  var dislikeButton = $('#dislikeCountAns_' + answerId).parent(); // parent of the span is the button
+                  var likeButton = $('#likeCountAns_' + answerId).parent();
+
+                  if (data.disliked) {
+                    dislikeButton.addClass('btn-danger');
+                    likeButton.removeClass('btn-success');
+                  } else {
+                    dislikeButton.removeClass('btn-danger');
+                  }
+                }
+                } else {
+                    // Display an error message if the server response indicates failure
+                    alert('Error1: ' + data.message);
+                }
+            },
+            error: function(xhr, textStatus, errorThrown) {
+                // Handle AJAX errors, e.g., show a generic error message
+                alert('AJAX Error: ' + errorThrown);
+            }
+        });
+    }
   </script>
-  
-  
 {% endblock %}
 

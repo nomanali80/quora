@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
 # myapp/views.py
@@ -6,6 +6,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from .forms import CustomUserCreationForm, CustomUserForm
 from django.contrib.auth.decorators import login_required
+from users.models import CustomUser 
+from answers.models import Answer
 
 def register(request):
     if request.method == 'POST':
@@ -30,6 +32,19 @@ def edit_profile(request):
 
     return render(request, 'registration/edit_profile.html', {'form': form})
 
+def show_profile(request, user_id):
+    user = get_object_or_404(CustomUser, id=user_id)
+    user_answers = Answer.objects.filter(user=user)
+
+    # Create a dictionary to store questions and their corresponding answers
+    answered_data = {}
+    for answer in user_answers:
+        question = answer.question
+        if question not in answered_data:
+            answered_data[question] = []
+        answered_data[question].append(answer)
+
+    return render(request, 'registration/show_profile.html', {'user': user, 'answered_data': answered_data})
+
 def dashboard(request):
     return render(request, 'dashboard.html')
-
