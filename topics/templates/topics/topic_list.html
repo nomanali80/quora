@@ -31,7 +31,7 @@
                     <div class="card-body">
                         <h5 class="card-title"><a href="{% url 'show_topic' topic_id=topic.id %}">{{ topic.title }}</a></h5>
                         <p class="card-text">{{ topic.description }}</p>
-                        <h6 class="card-subtitle mb-2 text-muted">Followed by: {{ topic.followed_by.all|length }}</h6>
+                        <h6 id="followedCount_{{ topic.id }}" class="followed-by-count card-subtitle mb-2 text-muted">Followed by: {{ topic.followed_by.all|length }}</h6>
                         <div class="related-questions mt-3">
                             <h6>Related Questions:</h6>
                             <div class="related-questions mt-3">

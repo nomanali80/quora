@@ -60,6 +60,7 @@ def follow_unfollow_topic(request, topic_id):
     topic.save()
 
     followed = user in topic.followed_by.all()
+    followed_count = topic.followed_by.all().count()
     label = 'Following' if followed else 'Follow +'
 
-    return JsonResponse({'status': 'success', 'label': label})
+    return JsonResponse({'status': 'success', 'label': label, 'followed_count': followed_count})
