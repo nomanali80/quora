@@ -1,5 +1,6 @@
 # questions/views.py
 from django.shortcuts import render, redirect, get_object_or_404
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import JsonResponse
 from topics.models import Topic
 from .models import Question
@@ -13,8 +14,8 @@ def create_question(request):
             question = form.save(commit=False)
             question.user = request.user
             question.save()
-            form.save_m2m()  # Save the many-to-many relationships
-            return redirect('question_list')  # Change 'question_list' to your actual URL name for displaying questions
+            form.save_m2m()
+            return redirect('question_list')
     else:
         form = QuestionForm()
 
@@ -24,6 +25,15 @@ def create_question(request):
 
 def question_list(request):
     questions = Question.objects.all()
+    questions_per_page = 5
+    paginator = Paginator(questions, questions_per_page)
+    page = request.GET.get('page')
+    try:
+        questions = paginator.page(page)
+    except PageNotAnInteger:
+        questions = paginator.page(1)
+    except EmptyPage:
+        questions = paginator.page(paginator.num_pages)
     return render(request, 'questions/question_list.html', {'questions': questions})
 
 def show_question(request, question_id):
