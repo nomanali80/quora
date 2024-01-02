@@ -1,5 +1,7 @@
 #from django.shortcuts import render
 from .models import Topic
+from django.http import JsonResponse
+import ipdb
 
 def topic_list(request):
     topics = Topic.objects.all()
@@ -21,3 +23,19 @@ def create_topic(request):
         form = TopicForm()
 
     return render(request, 'topics/create_topic.html', {'form': form})
+
+def follow_unfollow_topic(request, topic_id):
+    topic = Topic.objects.get(pk=topic_id)
+    user = request.user
+
+    if user in topic.followed_by.all():
+        topic.followed_by.remove(user)
+    else:
+        topic.followed_by.add(user)
+
+    topic.save()
+
+    followed = user in topic.followed_by.all()
+    label = 'Following' if followed else 'Follow +'
+
+    return JsonResponse({'status': 'success', 'label': label})
