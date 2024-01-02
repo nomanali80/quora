@@ -8,6 +8,7 @@ from .forms import CustomUserCreationForm, CustomUserForm
 from django.contrib.auth.decorators import login_required
 from users.models import CustomUser 
 from answers.models import Answer
+from topics.models import Topic
 
 def register(request):
     if request.method == 'POST':
@@ -35,6 +36,7 @@ def edit_profile(request):
 def show_profile(request, user_id):
     user = get_object_or_404(CustomUser, id=user_id)
     user_answers = Answer.objects.filter(user=user)
+    followed_topics = Topic.objects.filter(followed_by=user)
 
     # Create a dictionary to store questions and their corresponding answers
     answered_data = {}
@@ -44,7 +46,7 @@ def show_profile(request, user_id):
             answered_data[question] = []
         answered_data[question].append(answer)
 
-    return render(request, 'registration/show_profile.html', {'user': user, 'answered_data': answered_data})
+    return render(request, 'registration/show_profile.html', {'user': user, 'answered_data': answered_data, 'followed_topics': followed_topics})
 
 def dashboard(request):
     return render(request, 'dashboard.html')

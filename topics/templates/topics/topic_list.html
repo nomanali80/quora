@@ -18,24 +18,43 @@
 
 <h1>List of Topics</h1>
 
-<div class="row">
-    {% for topic in topics %}
-      <div class="col-md-4 mb-4">
-        <div class="card">
-          {% if topic.topic_picture %}
-            <img src="{{ topic.topic_picture|safe }}" alt="{{ topic.title }} Picture" class="card-img-top img-fluid" style="object-fit: cover; height: 200px;">
-          {% endif %}
-          <div class="card-body">
-            <h5 class="card-title">Title: {{ topic.title }}</h5>
-            <p class="card-text">Description: {{ topic.description }}</p>
-            <button type="button" id="followUnfollow_{{ topic.id }}" class="btn btn-primary" onclick="followUnfollow({{ topic.id }})">
-                {% if user in topic.followed_by.all %}Following{% else %}Follow{% endif %}
-            </button>
-          </div>
-        </div>
-      </div>
-    {% endfor %}
-  </div>
+<div class="container">
+    <div class="row">
+        {% for topic in topics %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow">
+                    {% if topic.topic_picture %}
+                        <img src="{{ topic.topic_picture|safe }}" alt="{{ topic.title }} Picture" class="card-img-top img-fluid" style="object-fit: cover; height: 200px;">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="{% url 'show_topic' topic_id=topic.id %}">{{ topic.title }}</a></h5>
+                        <p class="card-text">{{ topic.description }}</p>
+                        <h6 class="card-subtitle mb-2 text-muted">Followed by: {{ topic.followed_by.all|length }}</h6>
+                        <div class="related-questions mt-3">
+                            <h6>Related Questions:</h6>
+                            <div class="related-questions mt-3">
+                                <ul class="list-unstyled">
+                                    {% for question in topic.get_related_questions|slice:":5" %}
+                                        <li class="related-question">
+                                            <div class="question-content">
+                                                <span class="question-number">{{ forloop.counter }} - </span>
+                                                <span class="question-text">{{ question.content }}</span>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>                            
+                        </div>
+                        <button type="button" id="followUnfollow_{{ topic.id }}" class="btn btn-primary mt-3" onclick="followUnfollow({{ topic.id }})">
+                            {% if user in topic.followed_by.all %}Following{% else %}Follow{% endif %}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
     {% include 'topics/create_form.html' %}
 </body>
 <script>

@@ -26,23 +26,30 @@
 
     <div class="container mt-4">
       <h4 class="mb-3">Answered Questions</h4>
-      <ul class="list-group">
+      <div class="list-group">
           {% for question, answers in answered_data.items %}
-              <li class="list-group-item">
-                  <strong>Question:</strong> {{ question.content }}
-                  <br>
-                  <strong>Answers:</strong>
-                  <ul>
-                      {% for answer in answers %}
-                          <li>{{ answer.content }}</li>
-                      {% endfor %}
-                  </ul>
-              </li>
+          <div class="list-group-item list-group-item-action">
+              <h5 class="mb-1"><strong>Question:</strong></h5>
+              <p class="mb-2">{{ question.content }}</p>
+              <h6 class="mb-1"><strong>Answers:</strong></h6>
+              <ul class="list-group">
+                  {% for answer in answers %}
+                  <li class="list-group-item">{{ answer.content }}</li>
+                  {% endfor %}
+              </ul>
+          </div>
           {% endfor %}
-      </ul>
+      </div>
   </div>
-
-    <!-- Optional: Add a Bootstrap container and row for additional content -->
-
+  <div class="container mt-4">
+    <h4 class="mb-3">Followings Topics:</h4>
+    <div class="card mb-4">
+      <div class="card-body">
+        {% for topic in followed_topics %}
+        <span class="badge badge-info mr-2 mb-2">{{ topic.title }}</span>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
 </body>
 </html>

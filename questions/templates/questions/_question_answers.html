@@ -1,0 +1,35 @@
+<li class="list-group-item">
+  <div class="mb-2">
+    <h3><a href="{% url 'show_question' question_id=question.id %}">{{ question.content }}</a></h3>
+    {% with like_count=question.liked_by.count %}
+      <button type="button" class="btn btn-sm {% if request.user in question.liked_by.all %}btn-success{% endif %}" onclick="likeDislikeQuestion({{ question.id }}, 'like')">Like (<span id="likeCount_{{ question.id }}">{{ like_count }}</span>)</button>
+    {% endwith %}
+
+    {% with dislike_count=question.disliked_by.count %}
+      <button type="button" class="btn btn-sm {% if request.user in question.disliked_by.all %}btn-danger{% endif %}" onclick="likeDislikeQuestion({{ question.id }}, 'dislike')">Dislike (<span id="dislikeCount_{{ question.id }}">{{ dislike_count }}</span>)</button>
+    {% endwith %}
+  </br>
+  <span class="text-muted">asked by <a href="{% url 'show_profile' user_id=question.user.id %}">{{ question.user.name }}</a></span><br>
+    Topics: 
+    {% for topic in question.topics.all %}
+      <span class="badge bg-info">{{ topic.title }}</span>
+    {% endfor %}
+  </div>
+  <form class="mb-3 ajax-form" method="post" action="{% url 'create_answer' question.id %}">
+    {% csrf_token %}
+    <div class="input-group">
+      <input type="text" class="form-control" name="content" placeholder="Your answer" required>
+      <button type="submit" class="btn btn-primary">Submit Answer</button>
+    </div>
+  </form>
+  {% if question.answers.all %}
+  <h5 class="mb-3">Existing Answers:</h5>
+    {% if question_detail %}
+      {% include 'questions/_answer.html' with answers=question.answers.all %}
+    {% else %}
+      {% include 'questions/_answer.html' with answers=question.answers.all|slice:":2" %}
+    {% endif %}
+  {% else %}
+    <p>No answers yet.</p>
+  {% endif %}
+</li>

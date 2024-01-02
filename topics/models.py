@@ -13,3 +13,7 @@ class Topic(models.Model):
     def __str__(self):
         return self.title
 
+    def get_related_questions(self):
+        from questions.models import Question
+        return Question.objects.filter(topics=self)
+

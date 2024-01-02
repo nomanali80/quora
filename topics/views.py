@@ -2,14 +2,16 @@
 from .models import Topic
 from django.http import JsonResponse
 import ipdb
+from django.shortcuts import render, redirect, get_object_or_404
+from .forms import TopicForm
 
 def topic_list(request):
     topics = Topic.objects.all()
     return render(request, 'topics/topic_list.html', {'topics': topics})
 
-
-from django.shortcuts import render, redirect
-from .forms import TopicForm
+def show_topic(request, topic_id):
+    topic = get_object_or_404(Topic, id=topic_id)
+    return render(request, 'topics/show_topic.html', {'topic': topic})
 
 def create_topic(request):
     if request.method == 'POST':
