@@ -24,8 +24,14 @@ def create_question(request):
 
 
 def question_list(request):
-    questions = Question.objects.all()
-    questions_per_page = 5
+    all_topics = Topic.objects.all()
+    selected_topics = request.GET.getlist('topics')
+    if selected_topics:
+        questions = Question.objects.filter(topics__in=selected_topics)
+    else:
+        followed_topics = request.user.followings.all()
+        questions = Question.objects.filter(topics__in=followed_topics)
+    questions_per_page = 10
     paginator = Paginator(questions, questions_per_page)
     page = request.GET.get('page')
     try:
@@ -34,7 +40,7 @@ def question_list(request):
         questions = paginator.page(1)
     except EmptyPage:
         questions = paginator.page(paginator.num_pages)
-    return render(request, 'questions/question_list.html', {'questions': questions})
+    return render(request, 'questions/question_list.html', {'questions': questions, 'all_topics': all_topics, 'selected_topics': selected_topics})
 
 def show_question(request, question_id):
      question = get_object_or_404(Question, id=question_id)
