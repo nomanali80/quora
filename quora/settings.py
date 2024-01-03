@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "answers",
     "cloudinary",
     'bootstrap5',
+    'commons',
 ]
 
 MIDDLEWARE = [

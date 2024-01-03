@@ -13,35 +13,37 @@
 </head>
 
 {% block content %}
-  <div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <div class="card">
-          <div class="card-header bg-primary text-white">
-            <h2 class="mb-0">Create a New Question</h2>
-          </div>
-          <div class="card-body">
-            <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
-              {% csrf_token %}
-              <div class="form-group">
-                <label for="{{ form.content.id_for_label }}">Question Content</label>
-                {{ form.content }}
-                <div class="invalid-feedback">
-                  Please provide valid content for your question.
-                </div>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h2 class="mb-0">Create a New Question</h2>
+        </div>
+        <div class="card-body">
+          <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="{{ form.content.id_for_label }}" class="form-label">Question Content</label>
+              {{ form.content }}
+              <div class="invalid-feedback">
+                Please provide valid content for your question.
               </div>
-              <div class="form-group">
-                <select id="topics" name="topics" class="form-control" multiple>
-                  {% for topic in topics %}
-                      <option value="{{ topic.id }}" {% if topic.id in selected_topics %}selected{% endif %}>{{ topic.title }}</option>
-                  {% endfor %}
+            </div>
+            <div class="mb-3">
+              <label for="topics" class="form-label">Select Topics</label>
+              <select id="topics" name="topics" class="form-select" multiple>
+                {% for topic in topics %}
+                  <option value="{{ topic.id }}" {% if topic.id in selected_topics %}selected{% endif %}>{{ topic.title }}</option>
+                {% endfor %}
               </select>
-              </div>
-              <button type="submit" class="btn btn-primary">Create Question</button>
-            </form>
-          </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Create Question</button>
+          </form>
         </div>
       </div>
     </div>
   </div>
+</div>
 {% endblock %}
+
