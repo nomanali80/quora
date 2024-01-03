@@ -22,14 +22,13 @@
       <button type="submit" class="btn btn-primary">Submit Answer</button>
     </div>
   </form>
-  {% if question.answers.all %}
   <h5 class="mb-3">Existing Answers:</h5>
     {% if question_detail %}
       {% include 'questions/_answer.html' with answers=question.answers.all %}
     {% else %}
       {% include 'questions/_answer.html' with answers=question.answers.all|slice:":2" %}
     {% endif %}
-  {% else %}
+    {% if not question.answers.exists %}
     <p>No answers yet.</p>
   {% endif %}
 </li>
