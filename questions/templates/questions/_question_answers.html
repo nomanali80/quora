@@ -1,6 +1,7 @@
 <li class="list-group-item question-color">
   <div class="mb-2">
     <div class="wrap-content questions">
+    </br>
       <h3><a href="{% url 'show_question' question_id=question.id %}">Q. {{ question.content }}</a></h3>
     </div>
     {% with like_count=question.liked_by.count %}
@@ -16,7 +17,7 @@
       <span class="badge bg-info">{{ topic.title }}</span>
     {% endfor %}<br>
   <span class="text-muted">asked by <a href="{% url 'show_profile' user_id=question.user.id %}">{{ question.user.name }}</a></span>
-  </div>
+  </div></br>
     {% if question_detail %}
       {% include 'questions/_answer.html' with answers=question.answers.all %}
     {% else %}
@@ -30,7 +31,9 @@
     {% csrf_token %}
     <div class="input-group">
       <input type="text" class="form-control" name="content" placeholder="Your answer" required>
-      <button type="submit" class="btn btn-primary">Submit Answer</button>
+    </div>
+    <div class="d-flex justify-content-center mt-3">
+    <button type="submit" class="btn btn-primary ">Submit Answer</button>
     </div>
   </form>
 </li>

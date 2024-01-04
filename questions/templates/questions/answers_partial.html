@@ -1,6 +1,6 @@
 <!-- questions/templates/questions/answers_partial.html -->
 {% for answer in answers %}
-  <div class="list-group-item">
+  <div class="list-group-item answer-color mb-1">
         {{ answer.content }}<br>
         {% with like_count=answer.liked_by.count %}
           <button type="button" class="btn btn-sm {% if request.user in answer.liked_by.all %}btn-success{% endif %}" onclick="likeDislikeAnswer({{ answer.id }}, 'like')">Like (<span id="likeCountAns_{{ answer.id }}">{{ like_count }}</span>)</button>
