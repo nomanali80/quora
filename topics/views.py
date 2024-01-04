@@ -7,7 +7,7 @@ from django.contrib import messages
 
 def topic_list(request):
     topics_per_page = 6
-    topics = Topic.objects.all()
+    topics = Topic.objects.prefetch_related('question_set').all()
 
     paginator = Paginator(topics, topics_per_page)
     page = request.GET.get('page')

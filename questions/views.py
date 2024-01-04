@@ -28,26 +28,6 @@ def create_question(request):
     topics = Topic.objects.all()
     return render(request, 'questions/create_question.html', {'form': form, 'topics': topics})
 
-
-def question_list(request):
-    all_topics = Topic.objects.all()
-    selected_topics = request.GET.getlist('topics')
-    if selected_topics:
-        questions = Question.objects.filter(topics__in=selected_topics)
-    else:
-        followed_topics = request.user.followings.all()
-        questions = Question.objects.filter(topics__in=followed_topics)
-    questions_per_page = 10
-    paginator = Paginator(questions, questions_per_page)
-    page = request.GET.get('page')
-    try:
-        questions = paginator.page(page)
-    except PageNotAnInteger:
-        questions = paginator.page(1)
-    except EmptyPage:
-        questions = paginator.page(paginator.num_pages)
-    return render(request, 'questions/question_list.html', {'questions': questions, 'all_topics': all_topics, 'selected_topics': selected_topics})
-
 def show_question(request, question_id):
      question = get_object_or_404(Question, id=question_id)
      return render(request, 'questions/show_question.html', {'question': question})
