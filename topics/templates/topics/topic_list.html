@@ -2,13 +2,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head> {% load static %}
-    <link rel="stylesheet" href="{% static '/topics/css/style.css' %}">
     <script src="{% static '/topics/js/topic.js' %}"></script>
   </head>
   <body>
     <div class="container">
       <div class="row">
-        <button type="button" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#createTopicModal" style="width: fit-content;"> Create Topic </button>
+        <button type="button" class="btn btn-secondary m-3" data-bs-toggle="modal" data-bs-target="#createTopicModal" style="width: fit-content;"> Create Topic </button>
       </div>
       <h1>List of Topics</h1>
       <div class="row"> {% for topic in topics %} <div class="col-md-4 mb-4">
@@ -33,7 +32,7 @@
             </div>
           </div>
         </div> {% endfor %} </div>
-    </div> {% include 'topics/_paginator.html' with list=topics %} {% include 'topics/create_form.html' %}
+    </div> {% include 'commons/_paginator.html' with list=topics %} {% include 'topics/create_form.html' %}
   </body>
 </html>
 {% endblock %}

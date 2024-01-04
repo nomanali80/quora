@@ -4,19 +4,21 @@
   <head> {% load static %}
     <link rel="stylesheet" href="{% static 'quora/users/css/styles.css' %}">
   </head>
-  <body>
-    <form method="post" enctype="multipart/form-data"> {% csrf_token %} <h2>Edit Profile</h2> {% if form.profile_picture.value %} <label for="id_existing_profile_picture"></label>
-      <img src="{{ form.profile_picture.value }}" alt="Existing Profile Picture"> {% endif %} <label for="id_profile_picture">Change Profile picture:</label>
-      <input type="file" name="profile_picture" id="id_profile_picture">
-      <label for="id_name">Name:</label>
-      <input type="text" name="name" id="id_name" value="{{ form.name.value }}">
-      <label for="id_age">Age:</label>
-      <input type="number" name="age" id="id_age" value="{{ form.age.value }}">
-      <label for="id_gender">Gender:</label>
-      <select name="gender" id="id_gender"> {% for choice in form.gender.field.choices %} <option value="{{ choice.0 }}" {% if choice.0 == form.gender.value %}selected{% endif %}>{{ choice.1 }}</option> {% endfor %} </select>
-      <label for="id_email">Email:</label>
-      <input type="email" name="email" id="id_email" value="{{ form.email.value }}">
-      <button type="submit">Save changes</button>
-    </form>
-  </body>
+  <div class="edit-form">
+    <body>
+      <form method="post" enctype="multipart/form-data"> {% csrf_token %} <h2>Edit Profile</h2> {% if form.profile_picture.value %} <label for="id_existing_profile_picture"></label>
+        <img class="form-image" src="{{ form.profile_picture.value }}" alt="Existing Profile Picture"> {% endif %} <label for="id_profile_picture">Change Profile picture:</label>
+        <input type="file" name="profile_picture" id="id_profile_picture">
+        <label for="id_name">Name:</label>
+        <input type="text" name="name" id="id_name" value="{{ form.name.value }}">
+        <label for="id_age">Age:</label>
+        <input type="number" name="age" id="id_age" value="{{ form.age.value }}">
+        <label for="id_gender">Gender:</label>
+        <select name="gender" id="id_gender"> {% for choice in form.gender.field.choices %} <option value="{{ choice.0 }}" {% if choice.0 == form.gender.value %}selected{% endif %}>{{ choice.1 }}</option> {% endfor %} </select>
+        <label for="id_email">Email:</label>
+        <input type="email" name="email" id="id_email" value="{{ form.email.value }}">
+        <button type="submit">Save changes</button>
+      </form>
+    </body>
+  </div>
 </html> {% endblock %}

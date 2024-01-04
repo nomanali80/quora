@@ -3,6 +3,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import TopicForm
 from .models import Topic
+from django.contrib import messages
 
 def topic_list(request):
     topics_per_page = 6
@@ -40,8 +41,10 @@ def create_topic(request):
         form = TopicForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Topic created successfully!')
             return redirect('topic_list')
         else:
+            messages.error(request, 'Failed to create topic. Please check the form.')
             print(form.errors)
     else:
         form = TopicForm()

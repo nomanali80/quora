@@ -1,15 +1,18 @@
 <ul class="list-group existing-answers">
   {% for answer in answers %}
     <li class="list-group-item">
-      {{ answer.content }}<br>
-      {% with like_count=answer.liked_by.count %}
-        <button type="button" class="btn btn-sm {% if request.user in answer.liked_by.all %}btn-success{% endif %}" onclick="likeDislikeAnswer({{ answer.id }}, 'like')">Like (<span id="likeCountAns_{{ answer.id }}">{{ like_count }}</span>)</button>
-      {% endwith %}
+      <div class="wrap-content answers">
+        {{ answer.content }}
+      </div>
+      <div class="mt-2">
+        {% with like_count=answer.liked_by.count %}
+          <button type="button" class="btn btn-sm {% if request.user in answer.liked_by.all %}btn-success{% endif %}" onclick="likeDislikeAnswer({{ answer.id }}, 'like')">Like (<span id="likeCountAns_{{ answer.id }}">{{ like_count }}</span>)</button>
+        {% endwith %}
 
       {% with dislike_count=answer.disliked_by.count %}
         <button type="button" class="btn btn-sm {% if request.user in answer.disliked_by.all %}btn-danger{% endif %}" onclick="likeDislikeAnswer({{ answer.id }}, 'dislike')">Dislike (<span id="dislikeCountAns_{{ answer.id }}">{{ dislike_count }}</span>)</button>
       {% endwith %}</br>
-      <span class="text-muted">answered by <a href="{% url 'show_profile' user_id=answer.user.id %}">{{ answer.user.username }}</a></span><br>
+      <span class="text-muted">answered by <a href="{% url 'show_profile' user_id=answer.user.id %}">{{ answer.user.name }}</a></span><br>
     </li>
   {% endfor %}
 </ul>

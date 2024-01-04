@@ -54,6 +54,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'commons.middleware.LoginRequiredMiddleware',
 ]
 
 ROOT_URLCONF = "quora.urls"
@@ -134,6 +135,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = 'users.CustomUser'
 LOGIN_REDIRECT_URL = '/quora/dashboard/'
+LOGIN_URL = 'login'
 
 import cloudinary
 import cloudinary.uploader

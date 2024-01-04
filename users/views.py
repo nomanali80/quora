@@ -12,6 +12,7 @@ from users.models import CustomUser
 from answers.models import Answer
 from questions.models import Question
 from topics.models import Topic
+from django.contrib import messages
 
 def register(request):
     if request.method == 'POST':
@@ -24,13 +25,16 @@ def register(request):
         form = CustomUserCreationForm()
     return render(request, 'registration/register.html', {'form': form})
 
-@login_required    
+@login_required
 def edit_profile(request):
     if request.method == 'POST':
         form = CustomUserForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect('edit_profile')  # Redirect to the profile page after successful update
+            messages.success(request, 'Profile updated successfully!')
+            return redirect('edit_profile')
+        else:
+            messages.error(request, 'Failed to update profile.')
     else:
         form = CustomUserForm(instance=request.user)
 

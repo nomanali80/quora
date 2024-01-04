@@ -17,6 +17,7 @@ $(document).ready(function() {
               var answersContainer = form.closest('.list-group-item').find('.existing-answers');
               answersContainer.html(data);
               form.find('input[type="text"]').val('');
+              alert('Answer submitted successfully:');
           }
       });
   });
