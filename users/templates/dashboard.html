@@ -1,22 +1,33 @@
-<!-- myapp/templates/home.html -->
-{% include 'header.html' %}
+{% include 'commons/base.html' %}
 <!DOCTYPE html>
 <html lang="en">
-    
-<head>
-    {% load bootstrap5 %}
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-</head>
-
 <body>
-    <h1>Welcome to the Home Page!</h1>
-    ask a Question
-    current questions with ans based on user following topics max likes show first
-    user can like dislike question
+    {% block content %}
+  <div class="container">
+    <a href="{% url 'create_question' %}" class="btn btn-primary mt-3">Ask a Question?</a>
+    <div class="row">
+      <h6 class="mt-4">Filter by Topics:</h6>
+      <form method="get" action="{% url 'dashboard' %}">
+        <div class="form-group">
+            
+            <select id="topics" name="topics" class="form-control" multiple>
+              {% for topic in all_topics %}
+                  <option value="{{ topic.id }}" {% if topic.id in selected_topics %}selected{% endif %}>{{ topic.title }}</option>
+              {% endfor %}
+          </select>
+        </div>
+        <button type="submit" class="btn btn-outline-info mt-3">Apply Filter</button>
+      </form>
+    </div>
+    <h2>List of Questions</h2>
+    <ul class="list-group mt-4">
+      {% for question in questions %}
+        {% include 'questions/_question_answers.html' with question=question %}</br>
+      {% endfor %}
+    </ul>
+  </div>
+  {% include 'topics/_paginator.html' with list=questions %}
+{% endblock %}
 </body>
 </html>
 

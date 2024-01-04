@@ -15,7 +15,7 @@ def create_question(request):
             question.user = request.user
             question.save()
             form.save_m2m()
-            return redirect('question_list')
+            return redirect('dashboard')
     else:
         form = QuestionForm()
 

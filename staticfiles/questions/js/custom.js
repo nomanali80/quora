@@ -1,4 +1,6 @@
 $(document).ready(function() {
+  initilizeSelect2();
+
   $('form.ajax-form').submit(function(event) {
       console.log('Form submitted');
       event.preventDefault();
@@ -19,6 +21,19 @@ $(document).ready(function() {
       });
   });
 });
+
+function initilizeSelect2() {
+    var urlParams = new URLSearchParams(window.location.search);
+    var selectedTopics = urlParams.getAll('topics');
+
+    $('#topics').val(selectedTopics);
+    $('#topics').select2({
+        placeholder: 'Select topics',
+        allowClear: true,  // Enable clearing the selected options
+        width: '100%',      // Set the width to 50%
+    });
+}
+
 
 function likeDislikeQuestion(questionId, like_dislike, action) {
   var csrftoken = $("[name=csrfmiddlewaretoken]").val();
