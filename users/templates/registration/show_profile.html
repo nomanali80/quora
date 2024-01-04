@@ -14,16 +14,13 @@
       </div>
     </div>
     <div class="container mt-4">
-      <h4 class="mb-3">Answered Questions</h4>
-      <div class="list-group"> {% for question, answers in answered_data.items %} <div class="list-group-item list-group-item-action">
-          <h5 class="mb-1">
-            <strong>Question:</strong>
-          </h5>
-          <p class="mb-2 wrap-content questions">{{ question.content }}</p>
+      <h4 class="mb-3">Answered Questions by {{ user.name }}</h4>
+      <div class="list-group"> {% for question, answers in answered_data.items %} <div class="list-group-item list-group-item-action question-color">
+          <p class="mb-2 wrap-content questions">Q. {{ question.content }}</p>
           <h6 class="mb-1">
             <strong>Answers:</strong>
           </h6>
-          <ul class="list-group"> {% for answer in answers %} <li class="list-group-item wrap-content answers">{{ answer.content }}</li> {% endfor %}</ul>
+          <ul class="list-group"> {% for answer in answers %} <li class="list-group-item wrap-content answers answer-color">A. {{ answer.content }}</li> {% endfor %}</ul>
         </div> {% endfor %} </div>
     </div>
     <div class="container mt-4">

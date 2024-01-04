@@ -3,23 +3,8 @@
 <html lang="en">
 <body>
     {% block content %}
+    {% include 'commons/filters.html'%}
   <div class="container">
-    <a href="{% url 'create_question' %}" class="btn btn-secondary mt-3">Ask a Question?</a>
-    <div class="row">
-      <h6 class="mt-4">Filter by Topics:</h6>
-      <form method="get" action="{% url 'dashboard' %}">
-        <div class="form-group">
-            
-            <select id="topics" name="topics" class="form-control" multiple>
-              {% for topic in all_topics %}
-                  <option value="{{ topic.id }}" {% if topic.id in selected_topics %}selected{% endif %}>{{ topic.title }}</option>
-              {% endfor %}
-          </select>
-        </div>
-        <button type="submit" class="btn btn-outline-info mt-3">Apply Filter</button>
-      </form>
-    </div>
-    <h2>List of Questions</h2>
     <ul class="list-group mt-4">
       {% for question in questions %}
         {% include 'questions/_question_answers.html' with question=question %}</br>

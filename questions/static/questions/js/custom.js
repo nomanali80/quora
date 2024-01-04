@@ -17,7 +17,6 @@ $(document).ready(function() {
               var answersContainer = form.closest('.list-group-item').find('.existing-answers');
               answersContainer.html(data);
               form.find('input[type="text"]').val('');
-              alert('Answer submitted successfully:');
           }
       });
   });
@@ -29,9 +28,9 @@ function initilizeSelect2() {
 
     $('#topics').val(selectedTopics);
     $('#topics').select2({
-        placeholder: 'Select topics',
-        allowClear: true,  // Enable clearing the selected options
-        width: '100%',      // Set the width to 50%
+        placeholder: 'Filter questions by topics',
+        allowClear: true,
+        width: '100%',
     });
 }
 

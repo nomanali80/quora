@@ -1,8 +1,8 @@
-<ul class="list-group existing-answers">
+<ul class="list-group existing-answers ">
   {% for answer in answers %}
-    <li class="list-group-item">
+    <li class="list-group-item answer-color">
       <div class="wrap-content answers">
-        {{ answer.content }}
+        A. {{ answer.content }}
       </div>
       <div class="mt-2">
         {% with like_count=answer.liked_by.count %}
@@ -11,8 +11,8 @@
 
       {% with dislike_count=answer.disliked_by.count %}
         <button type="button" class="btn btn-sm {% if request.user in answer.disliked_by.all %}btn-danger{% endif %}" onclick="likeDislikeAnswer({{ answer.id }}, 'dislike')">Dislike (<span id="dislikeCountAns_{{ answer.id }}">{{ dislike_count }}</span>)</button>
-      {% endwith %}</br>
-      <span class="text-muted">answered by <a href="{% url 'show_profile' user_id=answer.user.id %}">{{ answer.user.name }}</a></span><br>
+      {% endwith %}</br></br>
+      <span>answered by <a href="{% url 'show_profile' user_id=answer.user.id %}">{{ answer.user.name }}</a></span><br>
     </li>
   {% endfor %}
 </ul>
