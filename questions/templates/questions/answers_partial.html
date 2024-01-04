@@ -8,7 +8,7 @@
 
         {% with dislike_count=answer.disliked_by.count %}
           <button type="button" class="btn btn-sm {% if request.user in answer.disliked_by.all %}btn-danger{% endif %}" onclick="likeDislikeAnswer({{ answer.id }}, 'dislike')">Dislike (<span id="dislikeCountAns_{{ answer.id }}">{{ dislike_count }}</span>)</button>
-        {% endwith %}</br>
-        <span class="text-muted">answered by <a href="{% url 'show_profile' user_id=answer.user.id %}">{{ answer.user.username }}</a></span><br>
+        {% endwith %}</br></br>
+        <span class="text-muted">answered by <a href="{% url 'show_profile' user_id=answer.user.id %}">{{ answer.user.name }}</a></span><br>
   </div>
 {% endfor %}

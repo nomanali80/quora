@@ -12,7 +12,7 @@
 
 <body>
   <div class="container">
-    <a href="{% url 'create_question' %}" class="btn btn-primary mt-3 mb-3">Ask a Question?</a>
+    <a href="{% url 'create_question' %}" class="btn btn-secondary mt-3 mb-3">Ask a Question?</a>
     <h2>List of Questions related to Topic: {{ topic.title }}</h2>
     <ul class="list-group mt-4">
       {% if questions %}
@@ -26,7 +26,7 @@
       {% endif %}
     </ul>
   </div>
-  {% include 'topics/_paginator.html' with list=questions %}
+  {% include 'commons/_paginator.html' with list=questions %}
 </body>
 
 </html>

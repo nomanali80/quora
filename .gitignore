@@ -1,0 +1,30 @@
+# Python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+
+# Virtual Environment
+venv/
+env/
+
+# IDE/Editor
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Database
+*.sqlite3
+
+# Django
+*/migrations/*.py
+*/migrations/*.pyc
+*/__pycache__/
+
+# Local settings
+local_settings.py
+
+# Logs and Media
+logs/
+media/

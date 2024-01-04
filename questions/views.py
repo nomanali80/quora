@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from topics.models import Topic
 from .models import Question
 from .forms import QuestionForm
+from django.contrib import messages
 import ipdb
 
 def create_question(request):
@@ -15,7 +16,12 @@ def create_question(request):
             question.user = request.user
             question.save()
             form.save_m2m()
+            messages.success(request, 'Question created successfully.')
+
             return redirect('dashboard')
+        else:
+            messages.error(request, 'Error creating question. Please correct the form.')
+
     else:
         form = QuestionForm()
 

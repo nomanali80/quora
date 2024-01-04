@@ -1,18 +1,5 @@
 /* quora/users/css/styles.css */
 
-body {
-  font-family: 'Arial', sans-serif;
-  background-color: #f4f4f4;
-  margin: 0;
-  padding: 0;
-}
-
-.container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
 h2 {
   text-align: center;
   color: #333;
@@ -28,7 +15,7 @@ form {
   }
 }
 
-img {
+.form-image {
   max-width: 100%;
   height: auto;
   border: 1px solid #ddd;
@@ -63,4 +50,9 @@ button {
 
 button:hover {
   background-color: #45a049;
+}
+
+.fixed-content {
+  border: 20px solid black;
+  display: none !important;
 }
