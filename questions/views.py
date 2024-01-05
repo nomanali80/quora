@@ -1,12 +1,9 @@
-# questions/views.py
 from django.shortcuts import render, redirect, get_object_or_404
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import JsonResponse
 from topics.models import Topic
 from .models import Question
 from .forms import QuestionForm
 from django.contrib import messages
-import ipdb
 
 def create_question(request):
     if request.method == 'POST':
@@ -17,10 +14,16 @@ def create_question(request):
             question.save()
             form.save_m2m()
             messages.success(request, 'Question created successfully.')
-
             return redirect('dashboard')
         else:
-            messages.error(request, 'Error creating question. Please correct the form.')
+            error_messages = []
+
+            for field, errors in form.errors.items():
+                field_errors = ', '.join(errors)
+                error_messages.append(f'{field.capitalize()}: {field_errors}')
+
+            error_message = 'Failed to create question. ' + ', '.join(error_messages)
+            messages.error(request, error_message)
 
     else:
         form = QuestionForm()
