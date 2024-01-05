@@ -13,4 +13,3 @@ class LoginRequiredMiddleware:
         
         response = self.get_response(request)
         return response
-

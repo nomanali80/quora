@@ -9,5 +9,4 @@ urlpatterns = [
     path('show_profile/<int:user_id>/', show_profile, name='show_profile'),
     path('login/', LoginView.as_view(template_name='registration/login.html', success_url='/quora/dashboard/'), name='login'),
     path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
-    # Add other views as needed
 ]
