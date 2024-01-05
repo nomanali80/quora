@@ -30,3 +30,4 @@ logs/
 media/
 
 .env
+.DS_Store
