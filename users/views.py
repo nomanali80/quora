@@ -16,6 +16,15 @@ def register(request):
             user = form.save()
             login(request, user)
             return redirect('dashboard')
+        else:
+            error_messages = []
+
+            for field, errors in form.errors.items():
+                field_errors = ', '.join(errors)
+                error_messages.append(f'{field.capitalize()}: {field_errors}')
+
+            error_message = 'Failed to user. ' + ', '.join(error_messages)
+            messages.error(request, error_message)
     else:
         form = CustomUserCreationForm()
     return render(request, 'registration/register.html', {'form': form})

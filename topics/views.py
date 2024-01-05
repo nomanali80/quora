@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import TopicForm
 from .models import Topic
 from django.contrib import messages
+import ipdb
 
 def topic_list(request):
     topics_per_page = 6
@@ -44,12 +45,18 @@ def create_topic(request):
             messages.success(request, 'Topic created successfully!')
             return redirect('topic_list')
         else:
-            messages.error(request, 'Failed to create topic. Please check the form.')
-            print(form.errors)
+            error_messages = []
+
+            for field, errors in form.errors.items():
+                field_errors = ', '.join(errors)
+                error_messages.append(f'{field.capitalize()}: {field_errors}')
+
+            error_message = 'Failed to create topic. ' + ', '.join(error_messages)
+            messages.error(request, error_message)
     else:
         form = TopicForm()
 
-    return render(request, 'topics/create_topic.html', {'form': form})
+    return redirect('topic_list')
 
 def follow_unfollow_topic(request, topic_id):
     topic = Topic.objects.get(pk=topic_id)

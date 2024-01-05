@@ -1,5 +1,5 @@
-<!-- myapp/templates/registration/register.html -->
-
+{% include 'commons/libraries.html' %}
+{% include 'commons/flash_notice.html' %}
 <head>
   {% load static %}
   <meta charset="UTF-8">
@@ -49,6 +49,9 @@
           <button type="submit" class="btn btn-primary">Register</button>
         </form>
       </div>
+    </div>
+    <div class="card-footer">
+      <p class="text-center">Already have an account? <a href="{% url 'login' %}">Login</a></p>
     </div>
   </div>
 {% endblock %}
