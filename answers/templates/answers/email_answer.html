@@ -1,0 +1,15 @@
+<!-- templates/answer_notification_email.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>New Answer Notification</title>
+</head>
+<body>
+    <h1>New Answer Notification</h1>
+    <p>Hello, {{ answer.question.user.name }}</p>
+    <p>A new answer has been created by: {{ answer.user.name }}</p>
+    <p>{{ answer.content }}</p>
+    <a href="http://127.0.0.1:8000{% url 'show_question' question_id=answer.question.id %}">See more</a>
+</body>
+</html>

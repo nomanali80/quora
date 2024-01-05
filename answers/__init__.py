@@ -1,0 +1,1 @@
+#default_app_config = 'answers.apps.YourAppNameConfig' // remove comment to send emails when answerd a question
