@@ -1,7 +1,6 @@
 # topics/forms.py
 
 from django import forms
-#from cloudinary.forms import CloudinaryFileField
 from .models import Topic
 
 import cloudinary
@@ -15,7 +14,6 @@ class TopicForm(forms.ModelForm):
     def save(self, commit=True):
         topic = super().save(commit=False)
 
-        # Check if profile picture is present in form data
         if 'topic_picture' in self.cleaned_data:
             topic_picture = self.cleaned_data['topic_picture']
 

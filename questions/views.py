@@ -38,17 +38,17 @@ def like_dislike_question(request, question_id):
     user = request.user
 
     if like_dislike == 'like':
-      if user in question.liked_by.all():
-          question.liked_by.remove(user)
-      else:
-          question.liked_by.add(user)
-          question.disliked_by.remove(user)
+        if user in question.liked_by.all():
+            question.liked_by.remove(user)
+        else:
+            question.liked_by.add(user)
+            question.disliked_by.remove(user)
     else:
-      if user in question.disliked_by.all():
-          question.disliked_by.remove(user)
-      else:
-          question.disliked_by.add(user)
-          question.liked_by.remove(user)
+        if user in question.disliked_by.all():
+            question.disliked_by.remove(user)
+        else:
+            question.disliked_by.add(user)
+            question.liked_by.remove(user)
 
     question.save()
 

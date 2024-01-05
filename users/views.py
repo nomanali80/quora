@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Prefetch
 from django.contrib import messages
 from django.contrib.auth import login
 from users.models import CustomUser 
@@ -7,7 +8,6 @@ from answers.models import Answer
 from questions.models import Question
 from topics.models import Topic
 from .forms import CustomUserCreationForm, CustomUserForm
-from django.db.models import Prefetch
 
 def register(request):
     if request.method == 'POST':

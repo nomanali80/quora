@@ -6,5 +6,4 @@ urlpatterns = [
     path('create/', create_topic, name='create_topic'),
     path('follow_unfollow_topic/<int:topic_id>/', follow_unfollow_topic, name='follow_unfollow_topic'),
     path('show_topic/<int:topic_id>/', show_topic, name='show_topic'),
-    # Add other patterns for topic details, create, etc.
 ]
