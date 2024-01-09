@@ -91,7 +91,7 @@ DATABASES = {
         'NAME': config('DB_NAME'),
         'USER': config('DB_USER'),
         'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST', default='localhost'),
+        'HOST': 'db',  # Use the name of the PostgreSQL service in your Docker Compose
         'PORT': config('DB_PORT', default='5432'),
     }
 }
