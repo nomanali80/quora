@@ -150,4 +150,3 @@ cloudinary.config(
     api_key = config('CLOUD_API'),
     api_secret = config('CLOUD_SECRET'),
 )
-
