@@ -1,0 +1,27 @@
+name: Build Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Docker
+      uses: docker/setup-docker@v2
+      with:
+        dockerfile: Dockerfile
+        context: .
+
+    - name: Build and run Docker image
+      run: docker-compose run --rm web python manage.py makemigrations && docker-compose run --rm web python manage.py migrate && docker-compose run --rm web python manage.py runserver 0.0.0.0:8000
+      env:
+        DB_NAME: ${{ secrets.DB_NAME }}
+        DB_USER: ${{ secrets.DB_USER }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
