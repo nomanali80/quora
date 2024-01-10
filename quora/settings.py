@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from decouple import config
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -142,12 +145,8 @@ AUTH_USER_MODEL = 'users.CustomUser'
 LOGIN_REDIRECT_URL = '/quora/dashboard/'
 LOGIN_URL = 'login'
 
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
-
 cloudinary.config(
-    cloud_name = 'ds62x7zpw',
-    api_key = '152666361451915',
-    api_secret = 'tMLlL0gJ275-9o8ljCreQ982xYA'
+    cloud_name = config('CLOUDINARY_NAME'),
+    api_key = config('CLOUD_API'),
+    api_secret = config('CLOUD_SECRET'),
 )
