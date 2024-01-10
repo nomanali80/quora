@@ -1,16 +1,15 @@
 from django.http import JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 from .forms import TopicForm
 from .models import Topic
-from django.contrib import messages
-import ipdb
+from commons.constants import TOPICS_PER_PAGE
 
 def topic_list(request):
-    topics_per_page = 6
     topics = Topic.objects.prefetch_related('question_set').all()
 
-    paginator = Paginator(topics, topics_per_page)
+    paginator = Paginator(topics, TOPICS_PER_PAGE)
     page = request.GET.get('page')
     try:
         topics = paginator.page(page)

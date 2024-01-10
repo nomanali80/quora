@@ -1,12 +1,12 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db.models import Prefetch
 from django.contrib import messages
 from django.contrib.auth import login
 from users.models import CustomUser 
 from answers.models import Answer
 from questions.models import Question
 from topics.models import Topic
+from commons.constants import QUESTIONS_PER_PAGE
 from .forms import CustomUserCreationForm, CustomUserForm
 
 def register(request):
@@ -69,8 +69,7 @@ def dashboard(request):
         followed_topics = request.user.followings.all()
         questions = Question.objects.filter(topics__in=followed_topics).prefetch_related('answers')
 
-    questions_per_page = 5
-    paginator = Paginator(questions, questions_per_page)
+    paginator = Paginator(questions, QUESTIONS_PER_PAGE)
     page = request.GET.get('page')
     try:
         questions = paginator.page(page)
