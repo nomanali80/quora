@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quora-web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: quora-web
+  template:
+    metadata:
+      labels:
+        app: quora-web
+    spec:
+      containers:
+      - name: web
+        image: your-registry/your-web-image:latest  # Replace with your actual image details
+        workingDir: /app
+        command: ["sh", "-c"]
+        args:
+        - |
+          pip install -r requirements.txt
+          python manage.py makemigrations
+          python manage.py migrate
+          gunicorn quora.wsgi:application --bind 0.0.0.0:8000
+        ports:
+        - containerPort: 8000
+        envFrom:
+        - configMapRef:
+            name: quora-config
+        - secretRef:
+            name: quora-secret
+---
