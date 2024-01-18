@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quora-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: quora-db
+  template:
+    metadata:
+      labels:
+        app: quora-db
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:latest
+        env:
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: quora-secret
+              key: postgres_db
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: quora-secret
+              key: postgres_user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: quora-secret
+              key: postgres_password
+        ports:
+        - containerPort: 5432
+---

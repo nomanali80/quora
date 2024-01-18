@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: quora-internal-service
+spec:
+  selector:
+    app: quora-web
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+---
